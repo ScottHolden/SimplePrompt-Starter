@@ -1,5 +1,4 @@
-﻿using Azure;
-using Azure.AI.OpenAI;
+﻿using Azure.AI.OpenAI;
 using Azure.Identity;
 
 string endpoint = "https://<fillthisin>.openai.azure.com/";
@@ -16,18 +15,15 @@ var prompt = """
     You are a helpful AI.
     """.Trim();
 
+Console.Write("User> ");
 var userInput = Console.ReadLine();
 
 // Get the response
 var chatCompletionOptions = new ChatCompletionsOptions(deploymentName, [
-    new ChatRequestSystemMessage("""
-    You are a developer assistant AI.
-    Take the users business requirements and generate a Swagger specification implementing 5-10 endpoints.
-    Respond with the Swagger specification as a json object and nothing else.
-    """),
-    new ChatRequestUserMessage("A doctors reservation system")
+    new ChatRequestSystemMessage(prompt),
+    new ChatRequestUserMessage(userInput)
 ]);
 var chatCompletionResponse = await client.GetChatCompletionsAsync(chatCompletionOptions);
 
 var response = chatCompletionResponse.Value.Choices[0].Message.Content;
-Console.WriteLine(response);
+Console.WriteLine("Assistant> " + response);
