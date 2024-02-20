@@ -4,19 +4,30 @@ using Azure.Identity;
 
 string endpoint = "https://<fillthisin>.openai.azure.com/";
 string deploymentName = "<fillthisin>";
-var credential = new DefaultAzureCredential();
 
+// Set up out client
+var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions {
+    //TenantId = "aaa-bbb-ccc-ddd-eee", // Uncomment if using a tenant other than the default
+});
 var client = new OpenAIClient(new Uri(endpoint), credential);
 
+// Set up our prompt and user message
 var prompt = """
+    You are a helpful AI.
+    """.Trim();
 
-""".Trim();
+var userInput = Console.ReadLine();
 
-// Sample emails can be found in email01.txt and email02.txt, or you can cretae your own!
+// Get the response
+var chatCompletionOptions = new ChatCompletionsOptions(deploymentName, [
+    new ChatRequestSystemMessage("""
+    You are a developer assistant AI.
+    Take the users business requirements and generate a Swagger specification implementing 5-10 endpoints.
+    Respond with the Swagger specification as a json object and nothing else.
+    """),
+    new ChatRequestUserMessage("A doctors reservation system")
+]);
+var chatCompletionResponse = await client.GetChatCompletionsAsync(chatCompletionOptions);
 
-Response<Completions> response = await client.GetCompletionsAsync(deploymentName, prompt);
-
-foreach (Choice choice in response.Value.Choices)
-{
-    // Output is up to you!
-}
+var response = chatCompletionResponse.Value.Choices[0].Message.Content;
+Console.WriteLine(response);
