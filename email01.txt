@@ -2,7 +2,7 @@ Hi Tech Support,
 
 Hope your Friday is going well, only a few hours left in the day.
 
-I kicked off a deployment about an hour ago and it seems to have impacted all enviroments. It was only a small change, replacing Azure SQL with MySQL, but now everything is showing not found errors.
+I kicked off a deployment about an hour ago and it seems to have impacted all environments. It was only a small change, replacing Azure SQL with MySQL, but now everything is showing not found errors.
 
 Not sure if this is the right email, but if you could get this sorted asap that would be fantastic as I'm about to get on a flight.
 
